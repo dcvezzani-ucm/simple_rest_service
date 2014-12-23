@@ -1,0 +1,11 @@
+<h1>Greeting#test</h1>
+<p>Find me in app/views/greeting/test.html.erb</p>
+
+<%#= form_tag('/greeting/shake.json') do %>
+  <%#= submit_tag 'Test' %>
+<%# end %>
+
+<form name="test" action="/greeting/shake.json" method="post">
+  <input type="hidden" name="asdf" value="zxcv"/>
+  <input type="submit"/>
+</form>
