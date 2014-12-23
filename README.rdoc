@@ -3,26 +3,77 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+== Prerequisites
 
-* Ruby version
+* Ruby, 2.1.0 (https://www.ruby-lang.org/en/downloads/)
+* Bundler, 1.5.2 (http://bundler.io/v1.2/bundle_package.html)
+* cURL (http://curl.haxx.se/)
+* jq (http://stedolan.github.io/jq/)
 
-* System dependencies
+<code>Ruby</code> will be used to drive Rails which is a great web application and web service framework.  <code>Bundler</code> is a dependency manager; all dependencies will be downloaded so the web application/service can run.  <code>cURL</code> is a command line tool that can be used as a web application client.  <code>jq</code> is a wonderful command line tool to parse and filter json so that it is pretty-printed to the terminal window.
 
-* Configuration
+== Assumptions
 
-* Database creation
+Service will be run in a Unix (or Unix-like) environment.  I use Mac OS.  A different OS can most certainly be used, but slight modifications to the following instructions will likely be necessary.
 
-* Database initialization
+== Prepare for use
 
-* How to run the test suite
+```
+  bundle install
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+== Start
 
-* Deployment instructions
+```
+  ./start.sh
+```
 
-* ...
+== Test it out
 
+From a terminal window, type/paste the following.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+```
+  rm cookies.txt
+
+  curl 'http://127.0.0.1:3772/greeting/test' \
+    -X GET\
+    --dump-header header.txt\
+    --cookie-jar cookies.txt\
+    -H 'Host: 127.0.0.1:3772' \
+    -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:34.0) Gecko/20100101 Firefox/34.0' \
+    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
+    -H 'Accept-Language: en-US,en;q=0.5' \
+    -H 'Accept-Encoding: gzip, deflate' \
+    -H 'Connection: keep-alive' \
+    -H 'Pragma: no-cache' \
+    -H 'Cache-Control: no-cache'  
+
+  curl 'http://127.0.0.1:3772/greeting/shake.json'\
+    -X POST\
+    --dump-header header.txt\
+    --cookie cookies.txt --cookie-jar cookies.txt\
+    -H 'Host: 127.0.0.1:3772' \
+    -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:34.0) Gecko/20100101 Firefox/34.0' \
+    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
+    -H 'Accept-Language: en-US,en;q=0.5' \
+    -H 'Accept-Encoding: gzip, deflate' \
+    -H 'Referer: http://127.0.0.1:3772/greeting/test' \
+    -H 'Connection: keep-alive' \
+    -H "Content-Length: 0"\
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    | jq '.'
+```
+
+How does the CSRF check work out?  The ApplicationController includes some logic to make sure that the cookies are updated to include the CSRF token so that the POST request has what it needs to pass the CSRF check.
+
+cURL provides a pattern for interacting with the web service such that authentication takes place and then the service is requested to accomplish something.  In the case of this simple service, we are looking for a response to our salutation.
+
+```
+  {
+    "greeting": {
+      "phrase": "nice to meet you"
+    }
+  }
+```
+
+Whether it's in Java, Ruby or some other language, working with the HTTPS protocol will be similar.
