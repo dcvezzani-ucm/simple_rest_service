@@ -68,4 +68,6 @@ cURL provides a pattern for interacting with the web service such that authentic
     }
   }
 
+<em>The nice formatting you see here is provided via jq, a powerful command line json parser which can be used to not only format json, but also filter it and generate custom formatted json blocks.</em>
+
 Whether it's in Java, Ruby or some other language, working with the HTTPS protocol will be similar.
