@@ -18,21 +18,16 @@ Service will be run in a Unix (or Unix-like) environment.  I use Mac OS.  A diff
 
 == Prepare for use
 
-```
   bundle install
-```
 
 == Start
 
-```
   ./start.sh
-```
 
 == Test it out
 
 From a terminal window, type/paste the following.
 
-```
   rm cookies.txt
 
   curl 'http://127.0.0.1:3772/greeting/test' \
@@ -62,18 +57,15 @@ From a terminal window, type/paste the following.
     -H "Content-Length: 0"\
     -H 'Content-Type: application/x-www-form-urlencoded' \
     | jq '.'
-```
 
 How does the CSRF check work out?  The ApplicationController includes some logic to make sure that the cookies are updated to include the CSRF token so that the POST request has what it needs to pass the CSRF check.
 
 cURL provides a pattern for interacting with the web service such that authentication takes place and then the service is requested to accomplish something.  In the case of this simple service, we are looking for a response to our salutation.
 
-```
   {
     "greeting": {
       "phrase": "nice to meet you"
     }
   }
-```
 
 Whether it's in Java, Ruby or some other language, working with the HTTPS protocol will be similar.
